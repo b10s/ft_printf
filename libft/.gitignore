@@ -1,0 +1,13 @@
+tests
+*.pdf
+*.swp
+exe
+*.out
+*.o
+libft.a
+main.c
+hexdump.c
+bonus
+*.swo
+libft-tester-tokyo/
+libftTester/
