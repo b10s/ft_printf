@@ -1,0 +1,5 @@
+*swp
+libftprintf.a
+*.o
+exe
+a.out

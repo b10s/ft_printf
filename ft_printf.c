@@ -1,5 +1,14 @@
 // main part
 // cspdiuxX%
+// c - char: DONE
+// s - string: DONE
+// p - void *: DONE
+// d - int: DONE
+// i - int: DONE
+// u - int as unsigned int: DONE
+// x - ?
+// X - ?
+// % - % itself
 
 // bonus
 // 1) Manage any combination of the following flags: ’-0.’ and the field minimum widt under all conversions.
@@ -9,24 +18,87 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include "./libft/libft.h"
+#include <limits.h>
+
+#include <stdlib.h>
+
+static	short	int	ft_count_future_len(unsigned int n);
+
+char *
+	ft_utoa(unsigned int n) {
+	unsigned long	x;
+	short int		len;
+	short int		i;
+	char			*res;
+
+	x = n;
+	res = NULL;
+	len = ft_count_future_len(n);
+	res = malloc(len + 1);
+	if (res == NULL)
+		return (NULL);
+	i = 0;
+	while (++i <= len)
+	{
+		res[len - i] = '0' + x % 10;
+		x = x / 10;
+	}
+	res[len] = '\0';
+	return (res);
+}
+
+static short int
+	ft_detect_sign(int n) {
+	if (n < 0)
+		return (1);
+	return (0);
+}
+
+static short int
+	ft_count_future_len(unsigned int n) {
+	short int	res;
+
+	if (n == 0)
+		return (1);
+	res = 0;
+	while (n != 0)
+	{
+		res++;
+		n = n / 10;
+	}
+	return (res);
+}
 
 void
-print_hx(char c) {
+print_hx(unsigned char c, int first) {
 	char *base = "0123456789abcdef";
 	int x = c / 16;
 	int y = c % 16;
 
-	ft_putchar_fd(base[y], 1);
-	ft_putchar_fd(base[x], 1);
+	if ( first == 1 && c < 16) {
+		ft_putchar_fd(base[y], 1);
+	} else {
+		ft_putchar_fd(base[x], 1);
+		ft_putchar_fd(base[y], 1);
+	}
 }
 
 void
 print_in_hex(char *p, short sz)
 {
-	printf("((%p))", *p);
-	for (short i=0; i < sz; i++) {
-		printf("(%d)", p[i]);
-		print_hx(p[i]);
+	//printf("((%p))", *p);
+	int started = 0;
+	int first = 0;
+	for (short i=sz-1; i >= 0; i--) {
+		if ( p[i] != 0 && started == 0 ) {
+			started = 1;
+			first = 1;
+		}
+		if (started == 1 ) {
+			printf("(%d)", p[i]);
+			print_hx(p[i], first);
+		}
+		first = 0;
 	}
 }
 
@@ -61,14 +133,37 @@ ft_printf(const char *fmt, ...)
       } else if (*(fmt+1) == 'p') {
 				short ptr_size = sizeof(void *);
 				void **ptr_in_mem = malloc(ptr_size);
-				printf("1. [%p]\n", *ptr_in_mem);
+				//printf("1. [%p]\n", *ptr_in_mem);
 				ft_bzero(ptr_in_mem, ptr_size);
-				printf("2. [%p]\n", *ptr_in_mem);
+				//printf("2. [%p]\n", *ptr_in_mem);
 				*ptr_in_mem = va_arg(ap, void *);
-				printf("3. [%p]\n", *ptr_in_mem);
+				//printf("3. [%p]\n", *ptr_in_mem);
 				ft_putchar_fd('0', fd);
 				ft_putchar_fd('x', fd);
 				print_in_hex(ptr_in_mem, ptr_size);
+				fmt++;
+			// what is d and what is size of d?
+			// what type in c for d?
+			// from man 3 printf we assume arg is int
+			// converted to signed decimal
+			// what difference between d and i ?
+      } else if (*(fmt+1) == 'd' || *(fmt+1) == 'i' ) {
+				int x = va_arg(ap, int);
+				char *str = ft_itoa(x);
+        ft_putstr_fd(str, fd);
+				free(str);
+				fmt++;
+      } else if (*(fmt+1) == 'u') {
+				int x = va_arg(ap, int);
+				// how to represent int as unsigned if it is negative?
+				// A: rely on type conversion of C? unsigned int = int (size should be enough)
+				// INT_MIN?
+				char *str = ft_utoa(x);
+        ft_putstr_fd(str, fd);
+				free(str);
+				fmt++;
+      } else if (*(fmt+1) == 'x') {
+				fmt++;
 			// prints %% and unknown like %w
 			} else {
       	ft_putchar_fd(*(fmt+1), fd);
@@ -85,11 +180,25 @@ ft_printf(const char *fmt, ...)
 void main() {
   char c = 'x';
   char *str = "test";
+
 	void *p = str;
 	int x = 42;
-  char *fmt = "c: [%c], str: [%s], void * [%p], digit [%d] %w and %%\n";
-  printf(fmt, c, str, p, x);
-  ft_printf(fmt, c, str, p, x);
+	int y = -42;
+	int z = 0;
+	int m = 9;
+	int n = 11;
+	int mm = INT_MAX;
+	int nn = INT_MIN;
+	int umm = UINT_MAX;
+	int mo = -1;
+
+  char *fmt = "c: [%c], str: [%s], void * [%p], digits [%d %d %d %d %d %d %d %d %d] u: [%u %u %u %u %u %u %u %u %u] %w and %%\n";
+
+	printf("orig: ");
+   printf(fmt, c, str, p, x, y, z, m, n, mm, nn, mo, umm, x, y, z, m, n, mm, nn, mo, umm);
+
+	ft_printf("my:   ");
+ft_printf(fmt, c, str, p, x, y, z, m, n, mm, nn, mo, umm, x, y, z, m, n, mm, nn, mo, umm);
 
 	printf("size of void * is: [%d]\n", sizeof(void *));
 }
