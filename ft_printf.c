@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/06 22:34:41 by aenshin           #+#    #+#             */
+/*   Updated: 2024/08/06 23:32:17 by aenshin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 // main part
 // cspdiuxX%
 // c - char: DONE
@@ -11,7 +23,8 @@
 // % - % itself: DONE
 
 // bonus
-// 1) Manage any combination of the following flags: ’-0.’ and the field minimum widt under all conversions.
+// 1) Manage any combination of the following flags: 
+// ’-0.’ and the field minimum widt under all conversions.
 // or
 // 2) Manage all the following flags: ’# +’ (Yes, one of them is a spa)
 
@@ -27,40 +40,29 @@ static	short	int	ft_count_future_len_hx(unsigned int n);
 
 char *
 	ft_utoax(unsigned int n) {
-	unsigned long	x;
 	short int		len;
 	short int		i;
 	char			*res;
-	char *base = "0123456789abcdef";
-	/*
-	int x = c / 16;
-	int y = c % 16;
-	ft_putchar_fd(base[y], 1);
-	 */
+	char			*base;
+	int				b;
 
-	x = n;
+	base = "0123456789abcdef";
 	res = NULL;
-	// TODO: leading zero - check and calculate len or assign \0 by i not by len
 	len = ft_count_future_len_hx(n);
-	len = len*2;
+	len = len * 2;
 	res = malloc(len + 1);
 	if (res == NULL)
 		return (NULL);
 	i = len - 1;
 	while (i >= 0)
 	{
-		int b = x % 256;
-
-		int xx = b / 16;
-		int yy = b % 16;
-		res[i] = base[yy];
+		b = n % 256;
+		res[i] = base[b % 16];
 		i--;
-		res[i] = base[xx];
+		res[i] = base[b / 16];
 		i--;
-
-		x = x / 256;
+		n = n / 256;
 	}
-
 	res[len] = '\0';
 	return (res);
 }
@@ -120,159 +122,190 @@ static short int
 	return (res);
 }
 
-void
-print_hx(unsigned char c, int first) {
-	char *base = "0123456789abcdef";
-	int x = c / 16;
-	int y = c % 16;
-
-	if ( first == 1 && c < 16) {
-		ft_putchar_fd(base[y], 1);
-	} else {
-		ft_putchar_fd(base[x], 1);
-		ft_putchar_fd(base[y], 1);
-	}
-}
-
-void
-print_big_hx(unsigned char c, int first) {
-	char *base = "0123456789ABCDEF";
-	int x = c / 16;
-	int y = c % 16;
-
-	if ( first == 1 && c < 16) {
-		ft_putchar_fd(base[y], 1);
-	} else {
-		ft_putchar_fd(base[x], 1);
-		ft_putchar_fd(base[y], 1);
-	}
-}
-
-void
-print_in_hex(char *p, short sz)
+void	print_hx(unsigned char c, int first)
 {
-	//printf("((%p))", *p);
-	int started = 0;
-	int first = 0;
-	for (short i=sz-1; i >= 0; i--) {
-		if ( p[i] != 0 && started == 0 ) {
+	char	*base;
+	int		x;
+	int		y;
+
+	x = c / 16;
+	y = c % 16;
+	base = "0123456789abcdef";
+	if (first == 1 && c < 16)
+	{
+		ft_putchar_fd(base[y], 1);
+	}
+	else
+	{
+		ft_putchar_fd(base[x], 1);
+		ft_putchar_fd(base[y], 1);
+	}
+}
+
+void	print_big_hx(unsigned char c, int first)
+{
+	char	*base;
+	int		x;
+	int		y;
+
+	x = c / 16;
+	y = c % 16;
+	base = "0123456789ABCDEF";
+	if (first == 1 && c < 16)
+	{
+		ft_putchar_fd(base[y], 1);
+	}
+	else
+	{
+		ft_putchar_fd(base[x], 1);
+		ft_putchar_fd(base[y], 1);
+	}
+}
+
+void	print_in_hex(char *p, short sz)
+{
+	int		started;
+	int		first;
+	short	i;
+
+	started = 0;
+	first = 0;
+	i = sz - 1;
+	while (i >= 0)
+	{
+		if (p[i] != 0 && started == 0)
+		{
 			started = 1;
 			first = 1;
 		}
-		if (started == 1 ) {
-			//printf("(%d)", p[i]);
+		if (started == 1)
+		{
 			print_hx(p[i], first);
 		}
 		first = 0;
+		i--;
 	}
 }
-
 
 // 1. parse fmt and call appropriate function to get arg and print it
 // 2. write functions for each specifier
 // 3. run against public tester
 // 4. check upstream implementation
 // 5. check 42 public repo implementation
-int
-ft_printf(const char *fmt, ...)
-{
-  va_list ap;
-  va_start(ap, fmt);
-  // is fd int or another type?
-  int fd = 1;
+//
 
-  for (; *fmt !=0; fmt++) {
-    if (*fmt == '%') {
-      // print a char
-      if (*(fmt+1) == 'c' ) {
-        char c = va_arg(ap, char);
-        ft_putchar_fd(c, fd);
-        fmt++;
-      // print a string
-      } else if (*(fmt+1) == 's' ){
-        char *str = va_arg(ap, char*);
-        ft_putstr_fd(str, fd);
-        fmt++;
-			// print a void *
-			// TODO: check NULL ptr, other edge cases
-      } else if (*(fmt+1) == 'p') {
-				short ptr_size = sizeof(void *);
-				void **ptr_in_mem = malloc(ptr_size);
-				//printf("1. [%p]\n", *ptr_in_mem);
+// TODO: check NULL ptr, other edge cases
+int	ft_printf(const char *fmt, ...)
+{
+	va_list			ap;
+	int				fd;
+	char			*str;
+	short			ptr_size;
+	void			**ptr_in_mem;
+	int				x;
+	unsigned int	xx;
+	char			*bigs;
+	char			*tmp;
+	char			c;
+
+	fd = 1;
+	va_start(ap, fmt);
+	while (*fmt != 0)
+	{
+		if (*fmt == '%')
+		{
+			if (*(fmt + 1) == 'c' )
+			{
+				c = va_arg(ap, char);
+				ft_putchar_fd(c, fd);
+				fmt++;
+			}
+			else if (*(fmt + 1) == 's' )
+			{
+				str = va_arg(ap, char *);
+				ft_putstr_fd(str, fd);
+				fmt++;
+			}
+			else if (*(fmt + 1) == 'p')
+			{
+				ptr_size = sizeof(void *);
+				ptr_in_mem = malloc(ptr_size);
 				ft_bzero(ptr_in_mem, ptr_size);
-				//printf("2. [%p]\n", *ptr_in_mem);
 				*ptr_in_mem = va_arg(ap, void *);
-				//printf("3. [%p]\n", *ptr_in_mem);
 				ft_putchar_fd('0', fd);
 				ft_putchar_fd('x', fd);
 				print_in_hex(ptr_in_mem, ptr_size);
 				fmt++;
-			// what is d and what is size of d?
-			// what type in c for d?
-			// from man 3 printf we assume arg is int
-			// converted to signed decimal
-			// what difference between d and i ?
-      } else if (*(fmt+1) == 'd' || *(fmt+1) == 'i' ) {
-				int x = va_arg(ap, int);
-				char *str = ft_itoa(x);
-        ft_putstr_fd(str, fd);
+			}
+			else if (*(fmt + 1) == 'd' || *(fmt + 1) == 'i' )
+			{
+				x = va_arg(ap, int);
+				str = ft_itoa(x);
+				ft_putstr_fd(str, fd);
 				free(str);
 				fmt++;
-      } else if (*(fmt+1) == 'u') {
-				int x = va_arg(ap, int);
-				// how to represent int as unsigned if it is negative?
-				// A: rely on type conversion of C? unsigned int = int (size should be enough)
-				// INT_MIN?
-				char *str = ft_utoa(x);
-        ft_putstr_fd(str, fd);
+			}
+			else if (*(fmt + 1) == 'u')
+			{
+				x = va_arg(ap, int);
+				str = ft_utoa(x);
+				ft_putstr_fd(str, fd);
 				free(str);
 				fmt++;
-      } else if (*(fmt+1) == 'x') {
-				unsigned int x = va_arg(ap, int);
-				char *str = ft_utoax(x);
-				if (*str == '0') {
-        	ft_putstr_fd(str+1, fd);
-				} else {
-        	ft_putstr_fd(str, fd);
+			}
+			else if (*(fmt + 1) == 'x')
+			{
+				xx = va_arg(ap, int);
+				str = ft_utoax(xx);
+				if (*str == '0')
+				{
+					ft_putstr_fd(str + 1, fd);
+				}
+				else
+				{
+					ft_putstr_fd(str, fd);
 				}
 				free(str);
 				fmt++;
-      } else if (*(fmt+1) == 'X') {
-				unsigned int x = va_arg(ap, int);
-				char *str = ft_utoax(x);
-				//TODO: check for null and in other places read code check for return values for malloc and other funcs
-				char *bigS = malloc(ft_strlen(str));
-				// TODO check for return value
-				ft_strlcpy(bigS, str, ft_strlen(str)+1);
-				char *tmp;
-				tmp = bigS;
-				char c;
-				//printf("s [%s]\n", tmp);
-				while(*tmp) {
-					c  = ft_toupper(*tmp);
+			}
+			else if (*(fmt + 1) == 'X')
+			{
+				xx = va_arg(ap, int);
+				str = ft_utoax(xx);
+				bigs = malloc(ft_strlen(str));
+				ft_strlcpy(bigs, str, ft_strlen(str) + 1);
+				tmp = bigs;
+				while (*tmp)
+				{
+					c = ft_toupper(*tmp);
 					*tmp = c;
 					tmp++;
 				}
-				if (*bigS == '0') {
-        	ft_putstr_fd(bigS+1, fd);
-				} else {
-        	ft_putstr_fd(bigS, fd);
+				if (*bigs == '0')
+				{
+					ft_putstr_fd(bigs + 1, fd);
+				}
+				else
+				{
+					ft_putstr_fd(bigs, fd);
 				}
 				free(str);
-				free(bigS);
-				fmt++;
-			// prints %% and unknown like %w
-			} else {
-      	ft_putchar_fd(*(fmt+1), fd);
+				free(bigs);
 				fmt++;
 			}
-    } else {
-      ft_putchar_fd(*fmt, fd);
-    }
-  }
+			else
+			{
+				ft_putchar_fd(*(fmt + 1), fd);
+				fmt++;
+			}
+		}
+		else
+		{
+			ft_putchar_fd(*fmt, fd);
+		}
+		fmt++;
+	}
 }
-
-
 
 void main() {
   char c = 'x';
