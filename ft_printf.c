@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 22:34:41 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/07 00:55:03 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/11 01:12:29 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,17 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	print_hx(unsigned char c, int first)
+//TODO: separate functions to utils, specifiers, etc
+
+int	print_hx(unsigned char c, int first)
 {
 	char	*base;
 	int		x;
 	int		y;
+	int		cnt;
 
 	x = c / 16;
+	cnt = 1;
 	y = c % 16;
 	base = "0123456789abcdef";
 	if (first == 1 && c < 16)
@@ -53,7 +57,9 @@ void	print_hx(unsigned char c, int first)
 	{
 		ft_putchar_fd(base[x], 1);
 		ft_putchar_fd(base[y], 1);
+		cnt = 2;
 	}
+	return (cnt);
 }
 
 void	print_big_hx(unsigned char c, int first)
@@ -76,13 +82,15 @@ void	print_big_hx(unsigned char c, int first)
 	}
 }
 
-void	print_in_hex(char *p, short sz)
+int	print_in_hex(char *p, short sz)
 {
 	int		started;
 	int		first;
 	short	i;
+	int		cnt;
 
 	started = 0;
+	cnt = 0;
 	first = 0;
 	i = sz - 1;
 	while (i >= 0)
@@ -94,11 +102,12 @@ void	print_in_hex(char *p, short sz)
 		}
 		if (started == 1)
 		{
-			print_hx(p[i], first);
+			cnt = cnt + print_hx(p[i], first);
 		}
 		first = 0;
 		i--;
 	}
+	return (cnt);
 }
 
 // 1. parse fmt and call appropriate function to get arg and print it
@@ -116,22 +125,30 @@ int	ft_printf(const char *fmt, ...)
 	int				x;
 	int				cnt;
 
+	cnt = 0;
 	va_start(ap, fmt);
 	while (*fmt != 0)
 	{
 		if (*fmt == '%')
 		{
-			cnt = cnt + 2;
 			if (*(fmt + 1) == 'c' )
+			{
 				ft_putchar_fd((char)va_arg(ap, int), STDOUT_FILENO);
+				cnt++;
+			}
 			else if (*(fmt + 1) == 's' )
-				ft_putstr_fd(va_arg(ap, char *), STDOUT_FILENO);
+			{
+				str = va_arg(ap, char *);
+				cnt = cnt + ft_strlen(str);
+				ft_putstr_fd(str, STDOUT_FILENO);
+			}
 			else if (*(fmt + 1) == 'p')
 				cnt = cnt + voidpspec(ap);
 			else if (*(fmt + 1) == 'd' || *(fmt + 1) == 'i' )
 			{
 				x = va_arg(ap, int);
 				str = ft_itoa(x);
+				cnt = cnt + ft_strlen(str);
 				ft_putstr_fd(str, STDOUT_FILENO);
 				free(str);
 			}
@@ -139,6 +156,8 @@ int	ft_printf(const char *fmt, ...)
 			{
 				x = va_arg(ap, int);
 				str = ft_utoa(x);
+				// these three lines can be separated as function?
+				cnt = cnt + ft_strlen(str);
 				ft_putstr_fd(str, STDOUT_FILENO);
 				free(str);
 			}
@@ -147,7 +166,10 @@ int	ft_printf(const char *fmt, ...)
 			else if (*(fmt + 1) == 'X')
 				cnt = cnt + bigxspecifier(ap);
 			else
+			{
 				ft_putchar_fd(*(fmt + 1), STDOUT_FILENO);
+				cnt++;
+			}
 			fmt++;
 		}
 		else
