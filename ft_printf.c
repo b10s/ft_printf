@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 22:34:41 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/11 20:02:34 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/11 20:22:30 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,17 +125,33 @@ int	ft_printf(const char *fmt, ...)
 	int				x;
 	int				cnt;
 	short			alt;
+	short			blank;
+	short			sign;
 
 	cnt = 0;
 	va_start(ap, fmt);
 	while (*fmt != 0)
 	{
 		alt = 0;
+		blank = 0;
+		sign = 0;
 		if (*fmt == '%')
 		{
+			// write function will check if one of third is present, return 0 or 1 for each and I can fmt++ accordingly
+			// currently here is a bug dued to order is hardcoded
 			if (*(fmt + 1) == '#')
 			{
 				alt = 1;
+				fmt++;
+			}
+			if (*(fmt + 1) == ' ')
+			{
+				blank = 1;
+				fmt++;
+			}
+			if (*(fmt + 1) == '+')
+			{
+				sign = 1;
 				fmt++;
 			}
 			if (*(fmt + 1) == 'c' )
@@ -156,6 +172,11 @@ int	ft_printf(const char *fmt, ...)
 				x = va_arg(ap, int);
 				str = ft_itoa(x);
 				cnt = cnt + ft_strlen(str);
+				if (blank == 1 && x >= 0)
+				{
+					ft_putchar_fd(' ', STDOUT_FILENO);
+					cnt++;
+				}
 				ft_putstr_fd(str, STDOUT_FILENO);
 				free(str);
 			}
