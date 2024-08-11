@@ -1,6 +1,6 @@
 NAME := libftprintf.a
 
-SRC := ft_printf.c
+SRC := ft_printf.c utils.c specifiers.c
 
 OBJ := $(patsubst %.c, %.o, $(SRC))
 
@@ -12,6 +12,8 @@ CFLAGS :=
 all: $(NAME)
 
 $(NAME): $(OBJ)
+	$(MAKE) -C ./libft
+	cp libft/libft.a $(NAME)
 	ar -srv $(NAME) $?
 
 clean:

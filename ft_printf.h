@@ -1,3 +1,5 @@
+#include <stdarg.h>
+#include "./libft/libft.h"
 #define FLAG_ALT   0b00000001
 #define FLAG_BLANK 0b00000010
 #define FLAG_SIGN  0b00000100
