@@ -23,7 +23,7 @@ int	voidpspec(va_list ap)
 	return (cnt);
 }
 
-int	bigxspecifier(va_list ap, short alt)
+int	bigxspecifier(va_list ap, unsigned short flags)
 {
 	char			*tmp;
 	char			*bigs;
@@ -40,7 +40,7 @@ int	bigxspecifier(va_list ap, short alt)
 	cnt = ft_strlen(str);
 	if (xx != 0)
 	{
-		if (alt == 1)
+		if ((flags & FLAG_ALT) != 0)
 		{
 			ft_putstr_fd("0X", STDOUT_FILENO);
 			cnt = cnt + 2;
@@ -69,7 +69,7 @@ int	bigxspecifier(va_list ap, short alt)
 	return (cnt);
 }
 
-int	hexspecifier(va_list ap, short alt)
+int	hexspecifier(va_list ap, unsigned short flags)
 {
 	unsigned int	xx;
 	char			*str;
@@ -81,7 +81,7 @@ int	hexspecifier(va_list ap, short alt)
 	cnt = ft_strlen(str);
 	if (xx != 0)
 	{
-		if (alt == 1)
+		if ((flags & FLAG_ALT) != 0)
 		{
 			ft_putstr_fd("0x", STDOUT_FILENO);
 			cnt = cnt + 2;
