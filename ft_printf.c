@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 22:34:41 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/11 23:33:13 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/11 23:50:59 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,11 @@ int	print_in_hex(char *p, short sz)
 unsigned short parse_flags(const char *fmt)
 {
 	unsigned short res;
+	//const char *fmt;
 
+	//printf("fmt ptr [%p], fmt [%p], *fmt [%c]\n", fmt_ptr, *fmt_ptr, **fmt_ptr);
+	//fmt = *fmt_ptr;
+	fmt++;
 	res = 0;
 	while (*fmt == '#' || *fmt == ' ' || *fmt == '+') {
 		if (*fmt == '#')
@@ -135,6 +139,18 @@ unsigned short parse_flags(const char *fmt)
 		fmt++;
 	}
 	//printf("flags: [%d]\n", res);
+	return (res);
+}
+
+size_t count_flags(const char *fmt)
+{
+	size_t res;
+	fmt++;
+	res = 0;
+	while (*fmt == '#' || *fmt == ' ' || *fmt == '+') {
+		fmt++;
+		res++;
+	}
 	return (res);
 }
 
@@ -183,13 +199,17 @@ int	ft_printf(const char *fmt, ...)
 			// ' '+#
 			// +#' '
 
-			flags = parse_flags(fmt+1);
+			flags = parse_flags(fmt);
+			fmt = fmt + count_flags(fmt);
+			//printf("after call fmt [%p] -> [%c]\n", fmt, *fmt);
+			/*
 			if ((flags & FLAG_SIGN) != 0 )
 				fmt++;
 			if ((flags & FLAG_BLANK) != 0 )
 				fmt++;
 			if ((flags & FLAG_ALT) != 0 )
 				fmt++;
+			*/
 			if (*(fmt + 1) == 'c' )
 			{
 				ft_putchar_fd((char)va_arg(ap, int), STDOUT_FILENO);

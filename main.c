@@ -27,6 +27,8 @@ int main() {
 	char *fmtb2 = "d: [% d % d % d % d % d % d % d % d % d]\n";
 	char *fmtb3 = "d: [%+d %+d %+d %+d %+d %+d %+d %+d %+d]\n";
 
+	char *fmtflg = "d: [%x %#x % #x %  #x %  x % x %x %x %##x %#x]\n";
+
 	int res;
 
 	printf("orig: ");
@@ -40,6 +42,8 @@ int main() {
 	 printf("res [%d]\n", res);
 	 res = printf(fmtb3, x, y, z, m, n, mm, nn, mo, umm);
 	 printf("res [%d]\n", res);
+	 res = printf(fmtflg, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+	 printf("res [%d]\n", res);
 
 	ft_printf("\nmy:   ");
 res = ft_printf(fmt, c, str, p, x, y, z, m, n, mm, nn, mo, umm, x, y, z, m, n, mm, nn, mo, umm);
@@ -51,6 +55,8 @@ res = ft_printf(fmtb, x, y, z, m, n, mm, nn, mo, umm, x, y, z, m, n, mm, nn, mo,
 res = ft_printf(fmtb2, x, y, z, m, n, mm, nn, mo, umm);
 	 printf("res [%d]\n", res);
 res = ft_printf(fmtb3, x, y, z, m, n, mm, nn, mo, umm);
+	 printf("res [%d]\n", res);
+res = ft_printf(fmtflg, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 	 printf("res [%d]\n", res);
 
 	//printf("size of void * is: [%d]\n", sizeof(void *));
