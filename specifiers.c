@@ -23,7 +23,7 @@ int	voidpspec(va_list ap)
 	return (cnt);
 }
 
-int	bigxspecifier(va_list ap)
+int	bigxspecifier(va_list ap, short alt)
 {
 	char			*tmp;
 	char			*bigs;
@@ -38,6 +38,14 @@ int	bigxspecifier(va_list ap)
 	xx = va_arg(ap, int);
 	str = ft_utoax(xx);
 	cnt = ft_strlen(str);
+	if (xx != 0)
+	{
+		if (alt == 1)
+		{
+			ft_putstr_fd("0X", STDOUT_FILENO);
+			cnt = cnt + 2;
+		}
+	}
 	bigs = malloc(ft_strlen(str));
 	ft_strlcpy(bigs, str, ft_strlen(str) + 1);
 	tmp = bigs;
@@ -61,7 +69,7 @@ int	bigxspecifier(va_list ap)
 	return (cnt);
 }
 
-int	hexspecifier(va_list ap)
+int	hexspecifier(va_list ap, short alt)
 {
 	unsigned int	xx;
 	char			*str;
@@ -71,6 +79,14 @@ int	hexspecifier(va_list ap)
 	xx = va_arg(ap, int);
 	str = ft_utoax(xx);
 	cnt = ft_strlen(str);
+	if (xx != 0)
+	{
+		if (alt == 1)
+		{
+			ft_putstr_fd("0x", STDOUT_FILENO);
+			cnt = cnt + 2;
+		}
+	}
 	if (*str == '0')
 	{
 		ft_putstr_fd(str + 1, STDOUT_FILENO);

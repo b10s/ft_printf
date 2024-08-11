@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 22:34:41 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/11 19:30:55 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/11 20:02:34 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,13 +124,20 @@ int	ft_printf(const char *fmt, ...)
 	char			*str;
 	int				x;
 	int				cnt;
+	short			alt;
 
 	cnt = 0;
 	va_start(ap, fmt);
 	while (*fmt != 0)
 	{
+		alt = 0;
 		if (*fmt == '%')
 		{
+			if (*(fmt + 1) == '#')
+			{
+				alt = 1;
+				fmt++;
+			}
 			if (*(fmt + 1) == 'c' )
 			{
 				ft_putchar_fd((char)va_arg(ap, int), STDOUT_FILENO);
@@ -162,9 +169,9 @@ int	ft_printf(const char *fmt, ...)
 				free(str);
 			}
 			else if (*(fmt + 1) == 'x')
-				cnt = cnt + hexspecifier(ap);
+				cnt = cnt + hexspecifier(ap, alt);
 			else if (*(fmt + 1) == 'X')
-				cnt = cnt + bigxspecifier(ap);
+				cnt = cnt + bigxspecifier(ap, alt);
 			else
 			{
 				ft_putchar_fd(*(fmt + 1), STDOUT_FILENO);

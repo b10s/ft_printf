@@ -23,6 +23,7 @@ int main() {
 
   char *fmt = "c: [%c], str: [%s], void * [%p], digits [%d %d %d %d %d %d %d %d %d] u: [%u %u %u %u %u %u %u %u %u] %w and %%\n";
 	char *fmt2 = "x: [%x %x %x %x %x %x %x %x %x], X: [%X %X %X %X %X %X %X %X %X]\n";
+	char *fmtb = "x: [%#x %#x %#x %#x %#x %#x %#x %#x %#x], X: [%#X %#X %#X %#X %#X %#X %#X %#X %#X]\n";
 
 	int res;
 
@@ -31,11 +32,15 @@ int main() {
 	 printf("res [%d]\n", res);
 	 res = printf(fmt2, x, y, z, m, n, mm, nn, mo, umm, x, y, z, m, n, mm, nn, mo, umm);
 	 printf("res [%d]\n", res);
+	 res = printf(fmtb, x, y, z, m, n, mm, nn, mo, umm, x, y, z, m, n, mm, nn, mo, umm);
+	 printf("res [%d]\n", res);
 
 	ft_printf("\nmy:   ");
 res = ft_printf(fmt, c, str, p, x, y, z, m, n, mm, nn, mo, umm, x, y, z, m, n, mm, nn, mo, umm);
 	 printf("res [%d]\n", res);
 res = ft_printf(fmt2, x, y, z, m, n, mm, nn, mo, umm, x, y, z, m, n, mm, nn, mo, umm);
+	 printf("res [%d]\n", res);
+res = ft_printf(fmtb, x, y, z, m, n, mm, nn, mo, umm, x, y, z, m, n, mm, nn, mo, umm);
 	 printf("res [%d]\n", res);
 
 	//printf("size of void * is: [%d]\n", sizeof(void *));
