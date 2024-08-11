@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 22:34:41 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/11 20:22:30 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/11 20:27:57 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,15 @@ int	ft_printf(const char *fmt, ...)
 				x = va_arg(ap, int);
 				str = ft_itoa(x);
 				cnt = cnt + ft_strlen(str);
-				if (blank == 1 && x >= 0)
+				if (sign == 1)
+				{
+					if (x >=0)
+					{
+						ft_putchar_fd('+', STDOUT_FILENO);
+						cnt++;
+					}
+				}
+				else if (blank == 1 && x >= 0)
 				{
 					ft_putchar_fd(' ', STDOUT_FILENO);
 					cnt++;
