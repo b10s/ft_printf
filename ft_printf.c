@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 22:34:41 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/11 20:27:57 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/11 23:14:55 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,27 @@ int	ft_printf(const char *fmt, ...)
 		{
 			// write function will check if one of third is present, return 0 or 1 for each and I can fmt++ accordingly
 			// currently here is a bug dued to order is hardcoded
+			// 0 - nothing
+			// 1 - just #
+			// 2 - just ' '
+			// 4 - just '+'
+			// 3 - # and ' '
+			// 5 - # and +
+			// 6 - ' ' and +
+			// 7 - # and ' ' and +
+			//
+			// # ' ' +
+			// which combinations are allowed? test in printf
+			// #' '
+			// ' '#
+			// #+
+			// +#
+			// ' '+
+			// +' '
+			// #' '+
+			// ' '+#
+			// +#' '
+
 			if (*(fmt + 1) == '#')
 			{
 				alt = 1;
