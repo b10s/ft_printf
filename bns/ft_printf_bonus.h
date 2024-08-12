@@ -6,12 +6,12 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:21:01 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/12 18:23:53 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/13 00:40:31 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#ifndef FT_PRINTF_BONUS_H
+# define FT_PRINTF_BONUS_H
 
 # include <stdarg.h>
 # include "./libft/libft.h"
