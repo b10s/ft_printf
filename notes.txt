@@ -1,1 +1,0 @@
-> rm ./a.out; cc ft_printf.c libft/libft.a; ./a.out
