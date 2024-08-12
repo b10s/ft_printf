@@ -19,7 +19,14 @@ int	voidpspec(va_list ap)
 	ft_putchar_fd('0', fd);
 	ft_putchar_fd('x', fd);
 	cnt = 2;
-	cnt = cnt + print_in_hex((char *)ptr_in_mem, ptr_size);
+	if (*ptr_in_mem == 0)
+	{
+		ft_putchar_fd('0', STDOUT_FILENO);
+		cnt++;
+	}
+	else
+		cnt = cnt + print_in_hex((char *)ptr_in_mem, ptr_size);
+	free(ptr_in_mem);
 	return (cnt);
 }
 

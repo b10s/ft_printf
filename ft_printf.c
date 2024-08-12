@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 22:34:41 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/11 23:50:59 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/12 16:28:02 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,8 +218,14 @@ int	ft_printf(const char *fmt, ...)
 			else if (*(fmt + 1) == 's' )
 			{
 				str = va_arg(ap, char *);
-				cnt = cnt + ft_strlen(str);
-				ft_putstr_fd(str, STDOUT_FILENO);
+				if (str == NULL)
+				{
+					cnt = cnt + 6;
+					ft_putstr_fd("(null)", STDOUT_FILENO);
+				} else {
+					cnt = cnt + ft_strlen(str);
+					ft_putstr_fd(str, STDOUT_FILENO);
+				}
 			}
 			else if (*(fmt + 1) == 'p')
 				cnt = cnt + voidpspec(ap);

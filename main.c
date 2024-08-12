@@ -59,6 +59,15 @@ res = ft_printf(fmtb3, x, y, z, m, n, mm, nn, mo, umm);
 res = ft_printf(fmtflg, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 	 printf("res [%d]\n", res);
 
+res =    printf(" NULL %s NULL ", NULL);
+	 printf("res [%d]\n", res);
+res = ft_printf(" NULL %s NULL ", NULL);
+	 printf("res [%d]\n", res);
+
+res =    printf(" %p %p ", 0, 0);
+	 printf("res [%d]\n", res);
+res = ft_printf(" %p %p ", 0, 0);
+	 printf("res [%d]\n", res);
 	//printf("size of void * is: [%d]\n", sizeof(void *));
 	 return (0);
 }
