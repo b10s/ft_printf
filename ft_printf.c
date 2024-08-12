@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 22:34:41 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/12 18:38:53 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/12 18:49:14 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@
 //TODO: verify Makefile
 //sepearate bonus to another files
 //create folder for files if needed
+//include bonus in bonus files
+//remove bonus part from non bonus files
 
 void	print_big_hx(unsigned char c, int first)
 {
