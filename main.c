@@ -64,10 +64,17 @@ res =    printf(" NULL %s NULL ", NULL);
 res = ft_printf(" NULL %s NULL ", NULL);
 	 printf("res [%d]\n", res);
 
-res =    printf(" %p %p ", 0, 0);
-	 printf("res [%d]\n", res);
-res = ft_printf(" %p %p ", 0, 0);
-	 printf("res [%d]\n", res);
+//res =    printf(" %p %p ", 0, 0);
+	 //printf("res [%d]\n", res);
+//res = ft_printf(" %p %p ", 0, 0);
+	 //printf("res [%d]\n", res);
+
+//res =    printf("( % 1s)", "");
+	 //printf("res [%d]\n", res);
+//res = ft_printf("( % 1s)", "");
+	 //printf("res [%d]\n", res);
+//26:     TEST(2, print(" % 1s", ""));
+//27:     TEST(3, print("% 1s ", ""));
 	//printf("size of void * is: [%d]\n", sizeof(void *));
 	 return (0);
 }

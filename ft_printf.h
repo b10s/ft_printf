@@ -12,3 +12,4 @@ int	voidpspec(va_list ap);
 int	print_in_hex(char *p, short sz);
 int	bigxspecifier(va_list ap, unsigned short flags);
 int	hexspecifier(va_list ap, unsigned short flags);
+int	print_hx(unsigned char c, int first);

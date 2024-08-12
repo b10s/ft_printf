@@ -26,6 +26,9 @@ re: fclean all
 
 .PHONY=all clean fclean re
 
+bonus: $(NAME)
+
+
 main:
 	$(CC) $(CFLAGS) ft_printf.c ./libft/libft.h -o exe
 

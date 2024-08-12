@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 22:34:41 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/12 16:28:02 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/12 17:23:47 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,30 +41,6 @@
 #define FLAG_SIGN  0b00000100
 
 //TODO: separate functions to utils, specifiers, etc
-
-int	print_hx(unsigned char c, int first)
-{
-	char	*base;
-	int		x;
-	int		y;
-	int		cnt;
-
-	x = c / 16;
-	cnt = 1;
-	y = c % 16;
-	base = "0123456789abcdef";
-	if (first == 1 && c < 16)
-	{
-		ft_putchar_fd(base[y], 1);
-	}
-	else
-	{
-		ft_putchar_fd(base[x], 1);
-		ft_putchar_fd(base[y], 1);
-		cnt = 2;
-	}
-	return (cnt);
-}
 
 void	print_big_hx(unsigned char c, int first)
 {
@@ -114,22 +90,20 @@ int	print_in_hex(char *p, short sz)
 	return (cnt);
 }
 
-
 // 00000001 - #
 // 00000010 - space
 // 00000100 - +
 // 00000101 - # and +
 // ...
-unsigned short parse_flags(const char *fmt)
+// Q: why I can not pass &fmt and modify fmt here?
+unsigned short	parse_flags(const char *fmt)
 {
-	unsigned short res;
-	//const char *fmt;
+	unsigned short	res;
 
-	//printf("fmt ptr [%p], fmt [%p], *fmt [%c]\n", fmt_ptr, *fmt_ptr, **fmt_ptr);
-	//fmt = *fmt_ptr;
 	fmt++;
 	res = 0;
-	while (*fmt == '#' || *fmt == ' ' || *fmt == '+') {
+	while (*fmt == '#' || *fmt == ' ' || *fmt == '+')
+	{
 		if (*fmt == '#')
 			res = res | FLAG_ALT;
 		if (*fmt == ' ')
@@ -138,16 +112,17 @@ unsigned short parse_flags(const char *fmt)
 			res = res | FLAG_SIGN;
 		fmt++;
 	}
-	//printf("flags: [%d]\n", res);
 	return (res);
 }
 
-size_t count_flags(const char *fmt)
+size_t	count_flags(const char *fmt)
 {
-	size_t res;
+	size_t	res;
+
 	fmt++;
 	res = 0;
-	while (*fmt == '#' || *fmt == ' ' || *fmt == '+') {
+	while (*fmt == '#' || *fmt == ' ' || *fmt == '+')
+	{
 		fmt++;
 		res++;
 	}
@@ -164,11 +139,11 @@ size_t count_flags(const char *fmt)
 // TODO: check NULL ptr, other edge cases
 int	ft_printf(const char *fmt, ...)
 {
-	va_list					ap;
-	char						*str;
-	int							x;
-	int							cnt;
 	unsigned short	flags;
+	va_list			ap;
+	char			*str;
+	int				x;
+	int				cnt;
 
 	cnt = 0;
 	va_start(ap, fmt);
@@ -176,40 +151,8 @@ int	ft_printf(const char *fmt, ...)
 	{
 		if (*fmt == '%')
 		{
-			// write function will check if one of third is present, return 0 or 1 for each and I can fmt++ accordingly
-			// currently here is a bug dued to order is hardcoded
-			// 0 - nothing
-			// 1 - just #
-			// 2 - just ' '
-			// 4 - just '+'
-			// 3 - # and ' '
-			// 5 - # and +
-			// 6 - ' ' and +
-			// 7 - # and ' ' and +
-			//
-			// # ' ' +
-			// which combinations are allowed? test in printf
-			// #' '
-			// ' '#
-			// #+
-			// +#
-			// ' '+
-			// +' '
-			// #' '+
-			// ' '+#
-			// +#' '
-
 			flags = parse_flags(fmt);
 			fmt = fmt + count_flags(fmt);
-			//printf("after call fmt [%p] -> [%c]\n", fmt, *fmt);
-			/*
-			if ((flags & FLAG_SIGN) != 0 )
-				fmt++;
-			if ((flags & FLAG_BLANK) != 0 )
-				fmt++;
-			if ((flags & FLAG_ALT) != 0 )
-				fmt++;
-			*/
 			if (*(fmt + 1) == 'c' )
 			{
 				ft_putchar_fd((char)va_arg(ap, int), STDOUT_FILENO);
@@ -222,7 +165,9 @@ int	ft_printf(const char *fmt, ...)
 				{
 					cnt = cnt + 6;
 					ft_putstr_fd("(null)", STDOUT_FILENO);
-				} else {
+				}
+				else
+				{
 					cnt = cnt + ft_strlen(str);
 					ft_putstr_fd(str, STDOUT_FILENO);
 				}
@@ -234,9 +179,9 @@ int	ft_printf(const char *fmt, ...)
 				x = va_arg(ap, int);
 				str = ft_itoa(x);
 				cnt = cnt + ft_strlen(str);
-				if ( (flags & FLAG_SIGN) != 0)
+				if ((flags & FLAG_SIGN) != 0)
 				{
-					if (x >=0)
+					if (x >= 0)
 					{
 						ft_putchar_fd('+', STDOUT_FILENO);
 						cnt++;
@@ -254,7 +199,6 @@ int	ft_printf(const char *fmt, ...)
 			{
 				x = va_arg(ap, int);
 				str = ft_utoa(x);
-				// these three lines can be separated as function?
 				cnt = cnt + ft_strlen(str);
 				ft_putstr_fd(str, STDOUT_FILENO);
 				free(str);
