@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 22:34:41 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/12 17:53:08 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/12 18:18:30 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,6 @@ int	ft_printf(const char *fmt, ...)
 	unsigned short	flags;
 	va_list			ap;
 	char			*str;
-	int				x;
 	int				cnt;
 
 	cnt = 0;
@@ -153,28 +152,7 @@ int	ft_printf(const char *fmt, ...)
 		{
 			flags = parse_flags(fmt);
 			fmt = fmt + count_flags(fmt);
-			if (*(fmt + 1) == 'c' )
-			{
-				ft_putchar_fd((char)va_arg(ap, int), STDOUT_FILENO);
-				cnt++;
-			}
-			else if (*(fmt + 1) == 's' )
-				cnt = cnt + strspecifier(ap);
-			else if (*(fmt + 1) == 'p')
-				cnt = cnt + voidpspec(ap);
-			else if (*(fmt + 1) == 'd' || *(fmt + 1) == 'i' )
-				cnt = cnt + dispecifier(ap, flags);
-			else if (*(fmt + 1) == 'u')
-				cnt = cnt + uspecifier(ap);
-			else if (*(fmt + 1) == 'x')
-				cnt = cnt + hexspecifier(ap, flags);
-			else if (*(fmt + 1) == 'X')
-				cnt = cnt + bigxspecifier(ap, flags);
-			else
-			{
-				ft_putchar_fd(*(fmt + 1), STDOUT_FILENO);
-				cnt++;
-			}
+			cnt = cnt + allspecifiers(ap, fmt, flags);
 			fmt++;
 		}
 		else
