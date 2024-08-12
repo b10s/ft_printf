@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 17:26:00 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/12 17:36:09 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/12 17:42:08 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,25 @@ int	hexspecifier(va_list ap, unsigned short flags)
 	else
 		ft_putstr_fd(str, STDOUT_FILENO);
 	free(str);
+	return (cnt);
+}
+
+int	strspecifier(va_list	ap)
+{
+	char	*str;
+	int		cnt;
+
+	cnt = 0;
+	str = va_arg(ap, char *);
+	if (str == NULL)
+	{
+		cnt = cnt + 6;
+		ft_putstr_fd("(null)", STDOUT_FILENO);
+	}
+	else
+	{
+		cnt = cnt + ft_strlen(str);
+		ft_putstr_fd(str, STDOUT_FILENO);
+	}
 	return (cnt);
 }

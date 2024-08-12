@@ -1,6 +1,6 @@
 NAME := libftprintf.a
 
-SRC := ft_printf.c utils.c specifiers.c
+SRC := ft_printf.c utils.c specifiers.c specifiers_2.c
 
 OBJ := $(patsubst %.c, %.o, $(SRC))
 

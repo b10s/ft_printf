@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 22:34:41 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/12 17:23:47 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/12 17:53:08 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,50 +159,13 @@ int	ft_printf(const char *fmt, ...)
 				cnt++;
 			}
 			else if (*(fmt + 1) == 's' )
-			{
-				str = va_arg(ap, char *);
-				if (str == NULL)
-				{
-					cnt = cnt + 6;
-					ft_putstr_fd("(null)", STDOUT_FILENO);
-				}
-				else
-				{
-					cnt = cnt + ft_strlen(str);
-					ft_putstr_fd(str, STDOUT_FILENO);
-				}
-			}
+				cnt = cnt + strspecifier(ap);
 			else if (*(fmt + 1) == 'p')
 				cnt = cnt + voidpspec(ap);
 			else if (*(fmt + 1) == 'd' || *(fmt + 1) == 'i' )
-			{
-				x = va_arg(ap, int);
-				str = ft_itoa(x);
-				cnt = cnt + ft_strlen(str);
-				if ((flags & FLAG_SIGN) != 0)
-				{
-					if (x >= 0)
-					{
-						ft_putchar_fd('+', STDOUT_FILENO);
-						cnt++;
-					}
-				}
-				else if ((flags & FLAG_BLANK) != 0 && x >= 0)
-				{
-					ft_putchar_fd(' ', STDOUT_FILENO);
-					cnt++;
-				}
-				ft_putstr_fd(str, STDOUT_FILENO);
-				free(str);
-			}
+				cnt = cnt + dispecifier(ap, flags);
 			else if (*(fmt + 1) == 'u')
-			{
-				x = va_arg(ap, int);
-				str = ft_utoa(x);
-				cnt = cnt + ft_strlen(str);
-				ft_putstr_fd(str, STDOUT_FILENO);
-				free(str);
-			}
+				cnt = cnt + uspecifier(ap);
 			else if (*(fmt + 1) == 'x')
 				cnt = cnt + hexspecifier(ap, flags);
 			else if (*(fmt + 1) == 'X')
