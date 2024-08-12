@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 22:34:41 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/12 18:49:14 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/13 00:55:24 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define FLAG_ALT   0b00000001
-#define FLAG_BLANK 0b00000010
-#define FLAG_SIGN  0b00000100
-
-//TODO: verify Makefile
-//sepearate bonus to another files
-//create folder for files if needed
 //include bonus in bonus files
 //remove bonus part from non bonus files
 
@@ -94,56 +87,9 @@ int	print_in_hex(char *p, short sz)
 	return (cnt);
 }
 
-// 00000001 - #
-// 00000010 - space
-// 00000100 - +
-// 00000101 - # and +
-// ...
-// Q: why I can not pass &fmt and modify fmt here?
-unsigned short	parse_flags(const char *fmt)
-{
-	unsigned short	res;
-
-	fmt++;
-	res = 0;
-	while (*fmt == '#' || *fmt == ' ' || *fmt == '+')
-	{
-		if (*fmt == '#')
-			res = res | FLAG_ALT;
-		if (*fmt == ' ')
-			res = res | FLAG_BLANK;
-		if (*fmt == '+')
-			res = res | FLAG_SIGN;
-		fmt++;
-	}
-	return (res);
-}
-
-size_t	count_flags(const char *fmt)
-{
-	size_t	res;
-
-	fmt++;
-	res = 0;
-	while (*fmt == '#' || *fmt == ' ' || *fmt == '+')
-	{
-		fmt++;
-		res++;
-	}
-	return (res);
-}
-
-// 1. parse fmt and call appropriate function to get arg and print it
-// 2. write functions for each specifier
-// 3. run against public tester
-// 4. check upstream implementation
-// 5. check 42 public repo implementation
-//
-
 // TODO: check NULL ptr, other edge cases
 int	ft_printf(const char *fmt, ...)
 {
-	unsigned short	flags;
 	va_list			ap;
 	int				cnt;
 
@@ -153,9 +99,7 @@ int	ft_printf(const char *fmt, ...)
 	{
 		if (*fmt == '%')
 		{
-			flags = parse_flags(fmt);
-			fmt = fmt + count_flags(fmt);
-			cnt = cnt + allspecifiers(ap, fmt, flags);
+			cnt = cnt + allspecifiers(ap, fmt);
 			fmt++;
 		}
 		else

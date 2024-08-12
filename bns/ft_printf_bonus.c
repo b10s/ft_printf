@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 22:34:41 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/12 18:46:45 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/13 00:59:41 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,10 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include "./libft/libft.h"
-#include "./ft_printf.h"
+#include "./ft_printf_bonus.h"
 #include <limits.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-#define FLAG_ALT   0b00000001
-#define FLAG_BLANK 0b00000010
-#define FLAG_SIGN  0b00000100
 
 //TODO: verify Makefile
 //sepearate bonus to another files

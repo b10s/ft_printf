@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 17:44:36 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/12 18:20:18 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/13 00:56:48 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	uspecifier(va_list ap)
 	return (cnt);
 }
 
-int	dispecifier(va_list	ap, unsigned short flags)
+int	dispecifier(va_list	ap)
 {
 	int		cnt;
 	int		x;
@@ -40,25 +40,12 @@ int	dispecifier(va_list	ap, unsigned short flags)
 	x = va_arg(ap, int);
 	str = ft_itoa(x);
 	cnt = cnt + ft_strlen(str);
-	if ((flags & FLAG_SIGN) != 0)
-	{
-		if (x >= 0)
-		{
-			ft_putchar_fd('+', STDOUT_FILENO);
-			cnt++;
-		}
-	}
-	else if ((flags & FLAG_BLANK) != 0 && x >= 0)
-	{
-		ft_putchar_fd(' ', STDOUT_FILENO);
-		cnt++;
-	}
 	ft_putstr_fd(str, STDOUT_FILENO);
 	free(str);
 	return (cnt);
 }
 
-int	allspecifiers(va_list ap, const char *fmt, unsigned short flags)
+int	allspecifiers(va_list ap, const char *fmt)
 {
 	int	cnt;
 
@@ -68,13 +55,13 @@ int	allspecifiers(va_list ap, const char *fmt, unsigned short flags)
 	else if (*(fmt + 1) == 'p')
 		cnt = cnt + voidpspec(ap);
 	else if (*(fmt + 1) == 'd' || *(fmt + 1) == 'i' )
-		cnt = cnt + dispecifier(ap, flags);
+		cnt = cnt + dispecifier(ap);
 	else if (*(fmt + 1) == 'u')
 		cnt = cnt + uspecifier(ap);
 	else if (*(fmt + 1) == 'x')
-		cnt = cnt + hexspecifier(ap, flags);
+		cnt = cnt + hexspecifier(ap);
 	else if (*(fmt + 1) == 'X')
-		cnt = cnt + bigxspecifier(ap, flags);
+		cnt = cnt + bigxspecifier(ap);
 	else
 	{
 		if (*(fmt + 1) == 'c' )

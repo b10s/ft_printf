@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 17:26:00 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/12 17:42:08 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/13 00:57:52 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ft_print_toupper_str(char *str)
 	return (cnt);
 }
 
-int	bigxspecifier(va_list ap, unsigned short flags)
+int	bigxspecifier(va_list ap)
 {
 	unsigned int	xx;
 	char			*str;
@@ -78,20 +78,12 @@ int	bigxspecifier(va_list ap, unsigned short flags)
 	xx = va_arg(ap, int);
 	str = ft_utoax(xx);
 	cnt = ft_strlen(str);
-	if (xx != 0)
-	{
-		if ((flags & FLAG_ALT) != 0)
-		{
-			ft_putstr_fd("0X", STDOUT_FILENO);
-			cnt = cnt + 2;
-		}
-	}
 	cnt = cnt + ft_print_toupper_str(str);
 	free(str);
 	return (cnt);
 }
 
-int	hexspecifier(va_list ap, unsigned short flags)
+int	hexspecifier(va_list ap)
 {
 	unsigned int	xx;
 	char			*str;
@@ -101,14 +93,6 @@ int	hexspecifier(va_list ap, unsigned short flags)
 	xx = va_arg(ap, int);
 	str = ft_utoax(xx);
 	cnt = ft_strlen(str);
-	if (xx != 0)
-	{
-		if ((flags & FLAG_ALT) != 0)
-		{
-			ft_putstr_fd("0x", STDOUT_FILENO);
-			cnt = cnt + 2;
-		}
-	}
 	if (*str == '0')
 	{
 		ft_putstr_fd(str + 1, STDOUT_FILENO);
