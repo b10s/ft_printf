@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 17:26:00 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/13 00:57:52 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/13 23:53:10 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,15 @@ int	voidpspec(va_list ap)
 		return (0);
 	ft_bzero(ptr_in_mem, ptr_size);
 	*ptr_in_mem = va_arg(ap, void *);
+	if (*ptr_in_mem == NULL)
+	{
+		ft_putstr_fd("(nil)", STDOUT_FILENO);
+		return (5);
+	}
 	ft_putchar_fd('0', STDOUT_FILENO);
 	ft_putchar_fd('x', STDOUT_FILENO);
 	cnt = 2;
-	if (*ptr_in_mem == 0)
-	{
-		ft_putchar_fd('0', STDOUT_FILENO);
-		cnt++;
-	}
-	else
-		cnt = cnt + print_in_hex((char *)ptr_in_mem, ptr_size);
+	cnt = cnt + print_in_hex((char *)ptr_in_mem, ptr_size);
 	free(ptr_in_mem);
 	return (cnt);
 }
