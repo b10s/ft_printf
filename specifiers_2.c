@@ -21,6 +21,8 @@ int	uspecifier(va_list ap)
 	cnt = 0;
 	x = va_arg(ap, int);
 	str = ft_utoa(x);
+	if (str == NULL)
+		return (0);
 	cnt = cnt + ft_strlen(str);
 	ft_putstr_fd(str, STDOUT_FILENO);
 	free(str);

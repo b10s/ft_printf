@@ -53,17 +53,17 @@ int	ft_print_toupper_str(char *str)
 {
 	char			*bigs;
 	char			*tmp;
-	unsigned char	c;
 	int				cnt;
 
 	cnt = 0;
 	bigs = malloc(ft_strlen(str) + 1);
+	if (bigs == NULL)
+		return (0);
 	ft_strlcpy(bigs, str, ft_strlen(str) + 1);
 	tmp = bigs;
 	while (*tmp)
 	{
-		c = ft_toupper(*tmp);
-		*tmp = c;
+		*tmp = ft_toupper(*tmp);
 		tmp++;
 	}
 	if (*bigs == '0')

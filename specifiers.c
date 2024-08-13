@@ -48,6 +48,8 @@ int	voidpspec(va_list ap)
 
 	ptr_size = sizeof(void *);
 	ptr_in_mem = malloc(ptr_size);
+	if (ptr_in_mem == NULL)
+		return (0);
 	ft_bzero(ptr_in_mem, ptr_size);
 	*ptr_in_mem = va_arg(ap, void *);
 	ft_putchar_fd('0', STDOUT_FILENO);
@@ -73,6 +75,8 @@ int	bigxspecifier(va_list ap)
 	cnt = 0;
 	xx = va_arg(ap, int);
 	str = ft_utoax(xx);
+	if (str == NULL)
+		return (0);
 	cnt = ft_strlen(str);
 	cnt = cnt + ft_print_toupper_str(str);
 	free(str);
@@ -88,6 +92,8 @@ int	hexspecifier(va_list ap)
 	cnt = 0;
 	xx = va_arg(ap, int);
 	str = ft_utoax(xx);
+	if (str == NULL)
+		return (0);
 	cnt = ft_strlen(str);
 	if (*str == '0')
 	{
