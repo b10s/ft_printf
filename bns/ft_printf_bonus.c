@@ -6,27 +6,9 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 22:34:41 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/13 00:59:41 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/13 20:50:33 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// main part
-// cspdiuxX%
-// c - char: DONE
-// s - string: DONE
-// p - void *: DONE
-// d - int: DONE
-// i - int: DONE
-// u - int as unsigned int: DONE
-// x - int as unsigned in hex: DONE
-// X - int as unsigned in HEX: DONE 
-// % - % itself: DONE
-
-// bonus
-// 1) Manage any combination of the following flags: 
-// ’-0.’ and the field minimum widt under all conversions.
-// or
-// 2) Manage all the following flags: ’# +’ (Yes, one of them is a spa)
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -35,10 +17,6 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-//TODO: verify Makefile
-//sepearate bonus to another files
-//create folder for files if needed
 
 void	print_big_hx(unsigned char c, int first)
 {
@@ -127,14 +105,6 @@ size_t	count_flags(const char *fmt)
 	return (res);
 }
 
-// 1. parse fmt and call appropriate function to get arg and print it
-// 2. write functions for each specifier
-// 3. run against public tester
-// 4. check upstream implementation
-// 5. check 42 public repo implementation
-//
-
-// TODO: check NULL ptr, other edge cases
 int	ft_printf(const char *fmt, ...)
 {
 	unsigned short	flags;

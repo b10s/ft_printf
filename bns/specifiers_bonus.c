@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 17:26:00 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/13 01:00:44 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/13 20:57:52 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	voidpspec(va_list ap)
 
 	ptr_size = sizeof(void *);
 	ptr_in_mem = malloc(ptr_size);
+	if (ptr_in_mem == NULL)
+		return (0);
 	ft_bzero(ptr_in_mem, ptr_size);
 	*ptr_in_mem = va_arg(ap, void *);
 	ft_putchar_fd('0', STDOUT_FILENO);
@@ -44,17 +46,17 @@ int	ft_print_toupper_str(char *str)
 {
 	char			*bigs;
 	char			*tmp;
-	unsigned char	c;
 	int				cnt;
 
 	cnt = 0;
 	bigs = malloc(ft_strlen(str) + 1);
+	if (bigs == NULL)
+		return (0);
 	ft_strlcpy(bigs, str, ft_strlen(str) + 1);
 	tmp = bigs;
 	while (*tmp)
 	{
-		c = ft_toupper(*tmp);
-		*tmp = c;
+		*tmp = ft_toupper(*tmp);
 		tmp++;
 	}
 	if (*bigs == '0')
@@ -77,6 +79,8 @@ int	bigxspecifier(va_list ap, unsigned short flags)
 	cnt = 0;
 	xx = va_arg(ap, int);
 	str = ft_utoax(xx);
+	if (str == NULL)
+		return (0);
 	cnt = ft_strlen(str);
 	if (xx != 0)
 	{
@@ -100,14 +104,13 @@ int	hexspecifier(va_list ap, unsigned short flags)
 	cnt = 0;
 	xx = va_arg(ap, int);
 	str = ft_utoax(xx);
+	if (str == NULL)
+		return (0);
 	cnt = ft_strlen(str);
-	if (xx != 0)
+	if (xx != 0 && (flags & FLAG_ALT) != 0)
 	{
-		if ((flags & FLAG_ALT) != 0)
-		{
-			ft_putstr_fd("0x", STDOUT_FILENO);
-			cnt = cnt + 2;
-		}
+		ft_putstr_fd("0x", STDOUT_FILENO);
+		cnt = cnt + 2;
 	}
 	if (*str == '0')
 	{
