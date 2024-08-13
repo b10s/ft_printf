@@ -10,10 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdarg.h>
 #include "./ft_printf.h"
-#include <unistd.h>
-#include <stdlib.h>
 
 int	uspecifier(va_list ap)
 {
@@ -45,30 +42,22 @@ int	dispecifier(va_list	ap)
 	return (cnt);
 }
 
-int	allspecifiers(va_list ap, const char *fmt)
+int	strspecifier(va_list	ap)
 {
-	int	cnt;
+	char	*str;
+	int		cnt;
 
 	cnt = 0;
-	if (*(fmt + 1) == 's' )
-		cnt = cnt + strspecifier(ap);
-	else if (*(fmt + 1) == 'p')
-		cnt = cnt + voidpspec(ap);
-	else if (*(fmt + 1) == 'd' || *(fmt + 1) == 'i' )
-		cnt = cnt + dispecifier(ap);
-	else if (*(fmt + 1) == 'u')
-		cnt = cnt + uspecifier(ap);
-	else if (*(fmt + 1) == 'x')
-		cnt = cnt + hexspecifier(ap);
-	else if (*(fmt + 1) == 'X')
-		cnt = cnt + bigxspecifier(ap);
+	str = va_arg(ap, char *);
+	if (str == NULL)
+	{
+		cnt = cnt + 6;
+		ft_putstr_fd("(null)", STDOUT_FILENO);
+	}
 	else
 	{
-		if (*(fmt + 1) == 'c' )
-			ft_putchar_fd((char)va_arg(ap, int), STDOUT_FILENO);
-		else
-			ft_putchar_fd(*(fmt + 1), STDOUT_FILENO);
-		cnt++;
+		cnt = cnt + ft_strlen(str);
+		ft_putstr_fd(str, STDOUT_FILENO);
 	}
 	return (cnt);
 }

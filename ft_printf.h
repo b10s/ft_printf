@@ -14,6 +14,8 @@
 # define FT_PRINTF_H
 
 # include <stdarg.h>
+# include <stdlib.h>
+# include <unistd.h>
 # include "./libft/libft.h"
 # define FLAG_ALT   0b00000001
 # define FLAG_BLANK 0b00000010
@@ -31,5 +33,6 @@ int		strspecifier(va_list	ap);
 int		uspecifier(va_list ap);
 int		dispecifier(va_list	ap);
 int		allspecifiers(va_list ap, const char *fmt);
+int		ft_print_toupper_str(char *str);
 
 #endif
