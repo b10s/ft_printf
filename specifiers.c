@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 17:26:00 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/13 23:53:10 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/14 00:53:09 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	voidpspec(va_list ap)
 	*ptr_in_mem = va_arg(ap, void *);
 	if (*ptr_in_mem == NULL)
 	{
+		free(ptr_in_mem);
 		ft_putstr_fd("(nil)", STDOUT_FILENO);
 		return (5);
 	}
