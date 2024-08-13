@@ -31,8 +31,8 @@ char *
 	start_ptr = (char *)s;
 	while (*s != '\0' && i < len)
 	{
-			s++;
-			i++;
+		s++;
+		i++;
 	}
 	res = malloc(i + 1);
 	if (res == NULL)
