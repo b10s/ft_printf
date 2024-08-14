@@ -76,9 +76,9 @@ unsigned short	parse_flags(const char *fmt)
 {
 	unsigned short	res;
 
-	fmt++;
 	res = 0;
-	while (*fmt == '#' || *fmt == ' ' || *fmt == '+')
+	while (*fmt == '#' || *fmt == ' ' || *fmt == '+'
+		|| *fmt == '-' || *fmt == '0')
 	{
 		if (*fmt == '#')
 			res = res | FLAG_ALT;
@@ -86,6 +86,10 @@ unsigned short	parse_flags(const char *fmt)
 			res = res | FLAG_BLANK;
 		if (*fmt == '+')
 			res = res | FLAG_SIGN;
+		if (*fmt == '-')
+			res = res | FLAG_LEFT_ALIGN;
+		if (*fmt == '0')
+			res = res | FLAG_LEADING_ZERO;
 		fmt++;
 	}
 	return (res);
@@ -95,9 +99,9 @@ size_t	count_flags(const char *fmt)
 {
 	size_t	res;
 
-	fmt++;
 	res = 0;
-	while (*fmt == '#' || *fmt == ' ' || *fmt == '+')
+	while (*fmt == '#' || *fmt == ' ' || *fmt == '+'
+		|| *fmt == '-' || *fmt == '0')
 	{
 		fmt++;
 		res++;
@@ -117,17 +121,29 @@ int	ft_printf(const char *fmt, ...)
 	{
 		if (*fmt == '%')
 		{
-			flags = parse_flags(fmt);
-			fmt = fmt + count_flags(fmt);
-			cnt = cnt + allspecifiers(ap, fmt, flags);
 			fmt++;
+			flags = parse_flags(fmt);
+			//printf("fmt [%s]\n", fmt);
+			fmt = fmt + count_flags(fmt);
+			// TODO: move to Nth position
+			//printf("fmt [%s]\n", fmt);
+			int width = ft_atoi(fmt);
+			while (ft_isdigit(*fmt))
+				fmt++;
+			//printf("width [%d]\n", width);
+			//printf("fmt [%s]\n", fmt);
+			// from here we can parse width
+			// then precision
+			cnt = cnt + allspecifiers(ap, fmt, flags, width);
+			fmt++;
+			//printf("fmt [%s]\n", fmt);
 		}
 		else
 		{
 			ft_putchar_fd(*fmt, STDOUT_FILENO);
 			cnt++;
+			fmt++;
 		}
-		fmt++;
 	}
 	va_end(ap);
 	return (cnt);

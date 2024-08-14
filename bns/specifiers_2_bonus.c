@@ -58,29 +58,29 @@ int	dispecifier(va_list	ap, unsigned short flags)
 	return (cnt);
 }
 
-int	allspecifiers(va_list ap, const char *fmt, unsigned short flags)
+int	allspecifiers(va_list ap, const char *fmt, unsigned short flags, int width)
 {
 	int	cnt;
 
 	cnt = 0;
-	if (*(fmt + 1) == 's' )
-		cnt = cnt + strspecifier(ap);
-	else if (*(fmt + 1) == 'p')
+	if (*(fmt) == 's' )
+		cnt = cnt + strspecifier(ap, width);
+	else if (*(fmt) == 'p')
 		cnt = cnt + voidpspec(ap);
-	else if (*(fmt + 1) == 'd' || *(fmt + 1) == 'i' )
+	else if (*(fmt) == 'd' || *(fmt) == 'i' )
 		cnt = cnt + dispecifier(ap, flags);
-	else if (*(fmt + 1) == 'u')
+	else if (*(fmt) == 'u')
 		cnt = cnt + uspecifier(ap);
-	else if (*(fmt + 1) == 'x')
+	else if (*(fmt) == 'x')
 		cnt = cnt + hexspecifier(ap, flags);
-	else if (*(fmt + 1) == 'X')
+	else if (*(fmt) == 'X')
 		cnt = cnt + bigxspecifier(ap, flags);
 	else
 	{
-		if (*(fmt + 1) == 'c' )
+		if (*(fmt) == 'c' )
 			ft_putchar_fd((char)va_arg(ap, int), STDOUT_FILENO);
 		else
-			ft_putchar_fd(*(fmt + 1), STDOUT_FILENO);
+			ft_putchar_fd(*(fmt), STDOUT_FILENO);
 		cnt++;
 	}
 	return (cnt);

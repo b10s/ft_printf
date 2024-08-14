@@ -15,6 +15,7 @@
 #include "./libft/libft.h"
 #include "./ft_printf_bonus.h"
 #include <unistd.h>
+#include <stdio.h>
 
 int	voidpspec(va_list ap)
 {
@@ -123,7 +124,7 @@ int	hexspecifier(va_list ap, unsigned short flags)
 	return (cnt);
 }
 
-int	strspecifier(va_list	ap)
+int	strspecifier(va_list	ap, int width)
 {
 	char	*str;
 	int		cnt;
@@ -131,14 +132,37 @@ int	strspecifier(va_list	ap)
 	cnt = 0;
 	str = va_arg(ap, char *);
 	if (str == NULL)
+		str = "(null)";
+	cnt = cnt + ft_print_str_in_width(str, width);
+	return (cnt);
+}
+
+// TODO: add to %p (nil)
+
+// TODO: after or before (minus flag)
+// 0 for interegers or so
+int ft_print_str_in_width(char *str, int width)
+{
+	int delta;
+	int len;
+
+	len = ft_strlen(str);
+	//printf("len [%d], w: [%d]\n", len, width);
+
+	if (len > width)
 	{
-		cnt = cnt + 6;
-		ft_putstr_fd("(null)", STDOUT_FILENO);
+		ft_putstr_fd(str, STDOUT_FILENO);
+		return (len);
 	}
 	else
 	{
-		cnt = cnt + ft_strlen(str);
+		delta = width - len;
+		while (delta >= 0)
+		{
+			ft_putchar_fd(' ', STDOUT_FILENO);
+			delta--;
+		}
 		ft_putstr_fd(str, STDOUT_FILENO);
+		return (width);
 	}
-	return (cnt);
 }

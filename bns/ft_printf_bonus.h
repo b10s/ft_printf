@@ -14,10 +14,13 @@
 # define FT_PRINTF_BONUS_H
 
 # include <stdarg.h>
-# include "./libft/libft.h"
-# define FLAG_ALT   0b00000001
-# define FLAG_BLANK 0b00000010
-# define FLAG_SIGN  0b00000100
+# include "../libft/libft.h"
+# define FLAG_ALT   				0b00000001
+# define FLAG_BLANK 				0b00000010
+# define FLAG_SIGN  				0b00000100
+# define FLAG_LEFT_ALIGN  	0b00001000
+# define FLAG_LEADING_ZERO  0b00010000
+# define FLAG_PRECISION_ARG	0b00100000
 
 int		ft_printf(const char *fmt, ...);
 char	*ft_utoax(unsigned int n);
@@ -27,9 +30,11 @@ int		print_in_hex(char *p, short sz);
 int		bigxspecifier(va_list ap, unsigned short flags);
 int		hexspecifier(va_list ap, unsigned short flags);
 int		print_hx(unsigned char c, int first);
-int		strspecifier(va_list	ap);
+int		strspecifier(va_list	ap, int width);
 int		uspecifier(va_list ap);
 int		dispecifier(va_list	ap, unsigned short flags);
-int		allspecifiers(va_list ap, const char *fmt, unsigned short flags);
+int ft_print_str_in_width(char *str, int width);
+int		allspecifiers(va_list ap, const char *fmt, unsigned short flags,
+			int width);
 
 #endif
