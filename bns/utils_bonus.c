@@ -15,29 +15,6 @@
 #include <stdlib.h>
 #include "./libft/libft.h"
 
-int	print_hx(unsigned char c, int first)
-{
-	char	*base;
-	int		x;
-	int		y;
-	int		cnt;
-
-	x = c / 16;
-	cnt = 1;
-	y = c % 16;
-	base = "0123456789abcdef";
-	if (first == 1 && c < 16)
-	{
-		ft_putchar_fd(base[y], 1);
-	}
-	else
-	{
-		ft_putchar_fd(base[x], 1);
-		ft_putchar_fd(base[y], 1);
-		cnt = 2;
-	}
-	return (cnt);
-}
 
 static short int
 	ft_count_future_len(unsigned int n) {

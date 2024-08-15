@@ -25,16 +25,18 @@
 int		ft_printf(const char *fmt, ...);
 char	*ft_utoax(unsigned int n);
 char	*ft_utoa(unsigned int n);
-int		voidpspec(va_list ap);
-int		print_in_hex(char *p, short sz);
+int		voidpspec(va_list ap, int width, int flags);
+char	*sprint_in_hex(char *p, short sz);
 int		bigxspecifier(va_list ap, unsigned short flags);
-int		hexspecifier(va_list ap, unsigned short flags);
+int		hexspecifier(va_list ap, int width, unsigned short flags, int big);
 int		print_hx(unsigned char c, int first);
-int		strspecifier(va_list	ap, int width);
-int		uspecifier(va_list ap);
-int		dispecifier(va_list	ap, unsigned short flags);
-int ft_print_str_in_width(char *str, int width);
+int		strspecifier(va_list	ap, int width, int flags);
+int		uspecifier(va_list ap, int width, int flags);
+int		dispecifier(va_list	ap, int width, unsigned short flags);
+int ft_print_str_in_width(char *str, int width, int flags);
 int		allspecifiers(va_list ap, const char *fmt, unsigned short flags,
 			int width);
+int cspecifier(va_list ap, int width, int flags);
+int ft_print_str_in_width_nums(char *str, int width, int flags);
 
 #endif

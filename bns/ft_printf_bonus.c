@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	print_big_hx(unsigned char c, int first)
+void	sprint_hx(unsigned char c, char *str)
 {
 	char	*base;
 	int		x;
@@ -26,44 +26,33 @@ void	print_big_hx(unsigned char c, int first)
 
 	x = c / 16;
 	y = c % 16;
-	base = "0123456789ABCDEF";
-	if (first == 1 && c < 16)
-	{
-		ft_putchar_fd(base[y], 1);
-	}
-	else
-	{
-		ft_putchar_fd(base[x], 1);
-		ft_putchar_fd(base[y], 1);
-	}
+	base = "0123456789abcdef";
+	str[0] = base[x];
+	str[1] = base[y];
 }
 
-int	print_in_hex(char *p, short sz)
+char *sprint_in_hex(char *p, short sz)
 {
-	int		started;
-	int		first;
 	short	i;
-	int		cnt;
+	char *str;
+	char *res;
 
-	started = 0;
-	cnt = 0;
-	first = 0;
 	i = sz - 1;
+	str = malloc(sz*2+3);
+	if (str == NULL)
+		return (0);
+	res = str;
+	str[0] = '0';
+	str[1] = '0';
+	str = str + 2;
 	while (i >= 0)
 	{
-		if (p[i] != 0 && started == 0)
-		{
-			started = 1;
-			first = 1;
-		}
-		if (started == 1)
-		{
-			cnt = cnt + print_hx(p[i], first);
-		}
-		first = 0;
+		sprint_hx(p[i], str);
+		str = str + 2;
 		i--;
 	}
-	return (cnt);
+	*str = 0;
+	return (res);
 }
 
 // 00000001 - #
