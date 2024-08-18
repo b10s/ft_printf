@@ -5,19 +5,17 @@ int main() {
 	int res;
 
 	printf("[origin]\n");
-	res = printf("'%04d'", -14);
+	res = printf(" %.2x ", -1);
 	printf("res: [%d]\n", res);
 
 	printf("\n[my]\n");
-	res = ft_printf("'%04d'", -14);
+res = ft_printf(" %.2x ", -1);
 	printf("res: [%d]\n", res);
 
 	return (0);
 }
 
 /*
-90, 91
-        TEST(90, print(" %-4u ", 9));
-        TEST(91, print(" %-1u ", 10));
-
+	        TEST(98, print(" %.2x ", -1));
+        TEST(101, print(" %.2x ", 10));
 */

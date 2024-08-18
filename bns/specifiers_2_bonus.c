@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 17:44:36 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/13 01:00:27 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/18 22:56:44 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-int	uspecifier(va_list ap, int width, int flags)
+int	uspecifier(va_list ap, int width, int flags, int prec)
 {
 	int		cnt;
 	int		x;
@@ -24,13 +24,13 @@ int	uspecifier(va_list ap, int width, int flags)
 	cnt = 0;
 	x = va_arg(ap, int);
 	str = ft_utoa(x);
-	cnt = ft_print_str_in_width_nums(str, width, flags);
+	cnt = ft_print_str_in_width_nums(str, width, flags, prec);
 	//cnt = ft_print_str_in_width(str, width, flags);
 	free(str);
 	return (cnt);
 }
 
-int	dispecifier(va_list	ap, int width, unsigned short flags)
+int	dispecifier(va_list	ap, int width, unsigned short flags, int prec)
 {
 	int		cnt;
 	int		x;
@@ -56,33 +56,31 @@ int	dispecifier(va_list	ap, int width, unsigned short flags)
 	else
 		s++;
 	
-	cnt = ft_print_str_in_width_nums(s, width, flags);
+	cnt = ft_print_str_in_width_nums(s, width, flags, prec);
 
 	free(str);
 	return (cnt);
 }
 
-int	allspecifiers(va_list ap, const char *fmt, unsigned short flags, int width)
+int	allspecifiers(va_list ap, const char *fmt, unsigned short flags, int width, int prec)
 {
 	int	cnt;
 
 	cnt = 0;
 	if (*(fmt) == 's' )
-		cnt = cnt + strspecifier(ap, width, flags);
+		cnt = cnt + strspecifier(ap, width, flags, prec);
 	else if (*(fmt) == 'p')
 		cnt = cnt + voidpspec(ap, width, flags);
 	else if (*(fmt) == 'd' || *(fmt) == 'i' )
-		cnt = cnt + dispecifier(ap, width, flags);
+		cnt = cnt + dispecifier(ap, width, flags, prec);
 	else if (*(fmt) == 'u')
-		cnt = cnt + uspecifier(ap, width, flags);
+		cnt = cnt + uspecifier(ap, width, flags, prec);
 	else if (*(fmt) == 'x')
-		cnt = cnt + hexspecifier(ap, width, flags, 0);
+		cnt = cnt + hexspecifier(ap, width, flags, 0, prec);
 	else if (*(fmt) == 'X')
-		cnt = cnt + hexspecifier(ap, width, flags, 1);
-		//cnt = cnt + bigxspecifier(ap, width, flags);
+		cnt = cnt + hexspecifier(ap, width, flags, 1, prec);
 	else if (*(fmt) == 'c' )
 		cnt = cnt + cspecifier(ap, width, flags);
-		//ft_putchar_fd((char)va_arg(ap, int), STDOUT_FILENO);
 	else
 	{
 		ft_putchar_fd(*(fmt), STDOUT_FILENO);

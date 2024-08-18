@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 22:34:41 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/13 20:50:33 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/18 21:44:18 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ int	ft_printf(const char *fmt, ...)
 	unsigned short	flags;
 	va_list			ap;
 	int				cnt;
+	int				prec;
 
 	cnt = 0;
 	va_start(ap, fmt);
@@ -112,20 +113,21 @@ int	ft_printf(const char *fmt, ...)
 		{
 			fmt++;
 			flags = parse_flags(fmt);
-			//printf("fmt [%s]\n", fmt);
 			fmt = fmt + count_flags(fmt);
-			// TODO: move to Nth position
-			//printf("fmt [%s]\n", fmt);
 			int width = ft_atoi(fmt);
 			while (ft_isdigit(*fmt))
 				fmt++;
-			//printf("width [%d]\n", width);
-			//printf("fmt [%s]\n", fmt);
-			// from here we can parse width
-			// then precision
-			cnt = cnt + allspecifiers(ap, fmt, flags, width);
+			if (*fmt == '.')
+			{
+				flags = flags | FLAG_PRECISION_ARG;
+				fmt++;
+				prec = ft_atoi(fmt);
+				while (ft_isdigit(*fmt))
+					fmt++;
+			}
+			//printf("prec: [%d]\n", prec);
+			cnt = cnt + allspecifiers(ap, fmt, flags, width, prec);
 			fmt++;
-			//printf("fmt [%s]\n", fmt);
 		}
 		else
 		{

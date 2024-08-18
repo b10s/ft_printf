@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 17:26:00 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/13 20:57:52 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/18 23:00:14 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	voidpspec(va_list ap, int width, int flags)
 		}
 		str--;
 	}
-	cnt = ft_print_str_in_width(str, width, flags);
+	cnt = ft_print_str_in_width(str, width, flags, 0);
 	//ft_putstr_fd("kek", STDOUT_FILENO);
 	free(tmp);
 	free(ptr_in_mem);
@@ -119,7 +119,7 @@ int	bigxspecifier(va_list ap, unsigned short flags)
 	return (cnt);
 }
 
-int	hexspecifier(va_list ap, int width, unsigned short flags, int big)
+int	hexspecifier(va_list ap, int width, unsigned short flags, int big, int prec)
 {
 	unsigned int	xx;
 	char			*str;
@@ -153,18 +153,18 @@ int	hexspecifier(va_list ap, int width, unsigned short flags, int big)
 		ft_toupper_str(str);
 	}
 	if (xx != 0 && (flags & FLAG_ALT) != 0)
-		cnt = ft_print_str_in_width_nums(buf, width, flags);
+		cnt = ft_print_str_in_width_nums(buf, width, flags, prec);
 	else if (*str == '0')
-		cnt = ft_print_str_in_width_nums(str + 1, width, flags);
+		cnt = ft_print_str_in_width_nums(str + 1, width, flags, prec);
 	else
-		cnt = ft_print_str_in_width_nums(str, width, flags);
+		cnt = ft_print_str_in_width_nums(str, width, flags, prec);
 
 	free(tmp);
 	free(str);
 	return (cnt);
 }
 
-int	strspecifier(va_list	ap, int width, int flags)
+int	strspecifier(va_list	ap, int width, int flags, int prec)
 {
 	char	*str;
 	int		cnt;
@@ -173,7 +173,7 @@ int	strspecifier(va_list	ap, int width, int flags)
 	str = va_arg(ap, char *);
 	if (str == NULL)
 		str = "(null)";
-	cnt = cnt + ft_print_str_in_width(str, width, flags);
+	cnt = cnt + ft_print_str_in_width(str, width, flags, prec);
 	return (cnt);
 }
 
@@ -181,12 +181,26 @@ int	strspecifier(va_list	ap, int width, int flags)
 
 // TODO: after or before (minus flag)
 // 0 for interegers or so
-int ft_print_str_in_width(char *str, int width, int flags)
+int ft_print_str_in_width(char *str, int width, int flags, int prec)
 {
 	int delta;
 	int len;
 
 	len = ft_strlen(str);
+	// prec
+	if ((flags & FLAG_PRECISION_ARG) != 0 && prec >= 0 ) {
+		//printf("prec is [%d], len [%d]\n", prec, len);
+		if (len >= prec) {
+			int i = prec;
+			while (i > 0) {
+				ft_putchar_fd(*str, STDOUT_FILENO);
+				i--;
+				str++;
+			}
+			return (prec);
+		}
+	}
+
 	if (len > width)
 	{
 		ft_putstr_fd(str, STDOUT_FILENO);
@@ -209,8 +223,89 @@ int ft_print_str_in_width(char *str, int width, int flags)
 	}
 }
 
-int ft_print_str_in_width_nums(char *str, int width, int flags)
+
+int
+	ft_ishexdigit(int c) {
+	if (c >= (int) '0' && c <= (int) '9')
+	{
+		return (1);
+	}
+	if (c >= (int) 'a' && c <= (int) 'f')
+	{
+		return (1);
+	}
+	if (c >= (int) 'A' && c <= (int) 'F')
+	{
+		return (1);
+	}
+	return (0);
+}
+
+		// pad with 0 and then pad with spaces
+		// di, if there is sign, pad after sign
+		// xX pad after 0x
+		// u just pad
+char * ft_pad_with_zeroes(char *str, int prec) {
+	char *res;
+	char *tmp;
+	int	pre;
+
+	pre = 0;
+	tmp = str;
+	if (*str == '-') {
+		pre++;
+		str++;
+	}
+
+	// it is hex
+	if (ft_strlen(str) > 2) {
+		if (str[0] == '0' && str[1] == 'x') {
+			str = str + 2;
+			pre = pre + 2;
+		}
+	}
+
+	int d = 0;
+	while (ft_ishexdigit(*str)) {
+		d++;
+		str++;
+	}
+
+	int needed = prec - d;
+	//printf("prec: [%d], needed: [%d]\n", prec, needed);
+
+	if (needed < 0)
+		needed = 0;
+
+	res = malloc(ft_strlen(str) + needed + 1);
+	if (res == NULL)
+		return (NULL);
+	str = tmp;
+	tmp = res;
+	while(pre > 0) {
+		*res = *str;
+		str++;
+		res++;
+		pre--;
+	}
+	while (needed > 0) {
+		*res = '0';
+		res++;
+		needed--;
+	}
+	ft_strlcpy(res, str, ft_strlen(str) + 1);
+
+	//printf("padded tmp: [%s]\n", tmp);
+	return (tmp);
+}
+
+// %05.7d, -7
+
+// 0x
+// sign - of +
+int ft_print_str_in_width_nums(char *str, int width, int flags, int prec)
 {
+	//printf("func prec: [%d]\n", prec);
 	int delta;
 	int len;
 	char	c;
@@ -218,43 +313,75 @@ int ft_print_str_in_width_nums(char *str, int width, int flags)
 	len = ft_strlen(str);
 	// TODO add here precicision flag 
 	//printf("flags: [%d]\n", flags);
-	if ((flags & FLAG_LEADING_ZERO) != 0 && (flags & FLAG_SIGN) == 0 )
+	if ((flags & FLAG_LEADING_ZERO) != 0 && (flags & FLAG_SIGN) == 0 && (flags & FLAG_PRECISION_ARG) == 0 )
 	{
 		c = '0';
 	}
 	else
 		c = ' ';
-	if (len > width)
+
+	if ( (flags & FLAG_PRECISION_ARG) !=0 )
 	{
-		ft_putstr_fd(str, STDOUT_FILENO);
-		return (len);
-	}
-	else
-	{
-		delta = width - len;
-		if ((flags & FLAG_LEFT_ALIGN) != 0)
+		// pad with 0 and then pad with spaces
+		// di, if there is sign, pad after sign
+		// xX pad after 0x
+		// u just pad
+		if (width > prec)
 		{
-			ft_putstr_fd(str, STDOUT_FILENO);
-			while (delta > 0)
-			{
-				ft_putchar_fd(' ', STDOUT_FILENO);
-				delta--;
-			}
+			char * padded = ft_pad_with_zeroes(str, prec);
+			//if (padded == NULL)
+				// return 0/NULL
+			free(padded);
+			// maybe keep running to next branch since we need to do min width logic
+			return (123);
 		}
 		else
 		{
-			if (*str == '-' && c == '0')
-			{
-				ft_putchar_fd('-', STDOUT_FILENO);
-				str++;
-			}
-			while (delta > 0)
-			{
-				ft_putchar_fd(c, STDOUT_FILENO);
-				delta--;
-			}
-			ft_putstr_fd(str, STDOUT_FILENO);
+			// just pad with 0
+			char * padded = ft_pad_with_zeroes(str, prec);
+			if (padded == NULL)
+				return (0);
+			// print an return
+			len = ft_strlen(padded);
+			ft_putstr_fd(padded, STDOUT_FILENO);
+			free(padded);
+			return (len);
 		}
-		return (width);
+	} else {
+		// go here if no precision is presented
+
+		if (len > width)
+		{
+			ft_putstr_fd(str, STDOUT_FILENO);
+			return (len);
+		}
+		else
+		{
+			delta = width - len;
+			if ((flags & FLAG_LEFT_ALIGN) != 0)
+			{
+				ft_putstr_fd(str, STDOUT_FILENO);
+				while (delta > 0)
+				{
+					ft_putchar_fd(' ', STDOUT_FILENO);
+					delta--;
+				}
+			}
+			else
+			{
+				if (*str == '-' && c == '0')
+				{
+					ft_putchar_fd('-', STDOUT_FILENO);
+					str++;
+				}
+				while (delta > 0)
+				{
+					ft_putchar_fd(c, STDOUT_FILENO);
+					delta--;
+				}
+				ft_putstr_fd(str, STDOUT_FILENO);
+			}
+			return (width);
+		}
 	}
 }
