@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 00:22:09 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/13 01:00:55 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/19 02:14:54 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 // or it is function not value?
 #include <stdlib.h>
 #include "./libft/libft.h"
-
 
 static short int
 	ft_count_future_len(unsigned int n) {
