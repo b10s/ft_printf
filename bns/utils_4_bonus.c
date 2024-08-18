@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 02:00:18 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/19 02:38:07 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/19 02:39:55 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,8 @@ int	reallyonlyminlen(char *str, t_wp wp, int flags, char c)
 			ft_putchar_fd('-', STDOUT_FILENO);
 			str++;
 		}
-		while (delta > 0)
-		{
+		while (delta-- > 0)
 			ft_putchar_fd(c, STDOUT_FILENO);
-			delta--;
-		}
 		ft_putstr_fd(str, STDOUT_FILENO);
 	}
 	return (wp.width);
