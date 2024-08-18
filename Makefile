@@ -1,10 +1,10 @@
 NAME := libftprintf.a
 
 SRC := ft_printf.c utils.c specifiers.c specifiers_2.c utils_2.c
-SRC_BONUS := ft_printf_bonus.c utils_bonus.c specifiers_bonus.c specifiers_2_bonus.c utils_2_bonus.c utils_3_bonus.c
+SRC_BONUS := ft_printf_bonus.c utils_bonus.c specifiers_bonus.c specifiers_2_bonus.c utils_2_bonus.c utils_3_bonus.c utils_4_bonus.c
 
 OBJ := $(patsubst %.c, %.o, $(SRC))
-OBJ_BONUS := ./bns/ft_printf_bonus.o ./bns/utils_bonus.o ./bns/specifiers_bonus.o ./bns/specifiers_2_bonus.o ./bns/utils_2_bonus.o ./bns/utils_3_bonus.o
+OBJ_BONUS := ./bns/ft_printf_bonus.o ./bns/utils_bonus.o ./bns/specifiers_bonus.o ./bns/specifiers_2_bonus.o ./bns/utils_2_bonus.o ./bns/utils_3_bonus.o ./bns/utils_4_bonus.o
 
 CC := cc
 

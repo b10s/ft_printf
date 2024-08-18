@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:21:01 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/19 01:43:22 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/19 02:02:44 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,6 @@ size_t			count_flags(const char *fmt);
 void			ft_toupper_str(char *str);
 void			movestr(char **str);
 int				ft_ishexdigit(int c);
+char			*ft_pad_with_zeroes(char *str, int prec);
 
 #endif
