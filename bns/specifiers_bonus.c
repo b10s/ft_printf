@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 17:26:00 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/18 23:00:14 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/19 00:13:43 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int	bigxspecifier(va_list ap, unsigned short flags)
 	return (cnt);
 }
 
-int	hexspecifier(va_list ap, int width, unsigned short flags, int big, int prec)
+int	hexspecifier(va_list ap, int width, unsigned short flags, int prec)
 {
 	unsigned int	xx;
 	char			*str;
@@ -147,11 +147,6 @@ int	hexspecifier(va_list ap, int width, unsigned short flags, int big, int prec)
 	}
 	buf--;
 
-	if (big == 1)
-	{
-		ft_toupper_str(buf);
-		ft_toupper_str(str);
-	}
 	if (xx != 0 && (flags & FLAG_ALT) != 0)
 		cnt = ft_print_str_in_width_nums(buf, width, flags, prec);
 	else if (*str == '0')

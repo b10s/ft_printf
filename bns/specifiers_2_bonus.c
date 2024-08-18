@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 17:44:36 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/18 22:56:44 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/19 00:24:44 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,25 +62,25 @@ int	dispecifier(va_list	ap, int width, unsigned short flags, int prec)
 	return (cnt);
 }
 
-int	allspecifiers(va_list ap, const char *fmt, unsigned short flags, int width, int prec)
+int	allspecifiers(va_list ap, const char *fmt, unsigned short flags, t_wp wp)
 {
 	int	cnt;
 
 	cnt = 0;
 	if (*(fmt) == 's' )
-		cnt = cnt + strspecifier(ap, width, flags, prec);
+		cnt = cnt + strspecifier(ap, wp.width, flags, wp.prec);
 	else if (*(fmt) == 'p')
-		cnt = cnt + voidpspec(ap, width, flags);
+		cnt = cnt + voidpspec(ap, wp.width, flags);
 	else if (*(fmt) == 'd' || *(fmt) == 'i' )
-		cnt = cnt + dispecifier(ap, width, flags, prec);
+		cnt = cnt + dispecifier(ap, wp.width, flags, wp.prec);
 	else if (*(fmt) == 'u')
-		cnt = cnt + uspecifier(ap, width, flags, prec);
+		cnt = cnt + uspecifier(ap, wp.width, flags, wp.prec);
 	else if (*(fmt) == 'x')
-		cnt = cnt + hexspecifier(ap, width, flags, 0, prec);
+		cnt = cnt + hexspecifier(ap, wp.width, flags, wp.prec);
 	else if (*(fmt) == 'X')
-		cnt = cnt + hexspecifier(ap, width, flags, 1, prec);
+		cnt = cnt + bhexspecifier(ap, wp.width, flags, wp.prec);
 	else if (*(fmt) == 'c' )
-		cnt = cnt + cspecifier(ap, width, flags);
+		cnt = cnt + cspecifier(ap, wp.width, flags);
 	else
 	{
 		ft_putchar_fd(*(fmt), STDOUT_FILENO);

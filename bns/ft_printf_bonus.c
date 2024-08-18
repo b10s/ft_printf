@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 22:34:41 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/18 23:18:18 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/19 00:23:41 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,30 +98,12 @@ size_t	count_flags(const char *fmt)
 	return (res);
 }
 
-void	flg(const char **fmt, unsigned short *flags, int *width, int *prec)
-{
-	*flags = parse_flags(*fmt);
-	*fmt = *fmt + count_flags(*fmt);
-	*width = ft_atoi(*fmt);
-	while (ft_isdigit(**fmt))
-		(*fmt)++;
-	if (**fmt == '.')
-	{
-		*flags = *flags | FLAG_PRECISION_ARG;
-		(*fmt)++;
-		*prec = ft_atoi(*fmt);
-		while (ft_isdigit(**fmt))
-			(*fmt)++;
-	}
-}
-
 int	ft_printf(const char *fmt, ...)
 {
 	unsigned short	flags;
 	va_list			ap;
 	int				cnt;
-	int				prec;
-	int				width;
+	t_wp			wp;
 
 	cnt = 0;
 	va_start(ap, fmt);
@@ -130,8 +112,8 @@ int	ft_printf(const char *fmt, ...)
 		if (*fmt == '%')
 		{
 			fmt++;
-			flg(&fmt, &flags, &width, &prec);
-			cnt = cnt + allspecifiers(ap, fmt, flags, width, prec);
+			flg(&fmt, &flags, &wp.width, &wp.prec);
+			cnt = cnt + allspecifiers(ap, fmt, flags, wp);
 			fmt++;
 		}
 		else
