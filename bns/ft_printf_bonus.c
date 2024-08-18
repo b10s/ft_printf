@@ -6,7 +6,7 @@
 /*   By: aenshin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 22:34:41 by aenshin           #+#    #+#             */
-/*   Updated: 2024/08/18 21:44:18 by aenshin          ###   ########.fr       */
+/*   Updated: 2024/08/18 23:18:18 by aenshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ void	sprint_hx(unsigned char c, char *str)
 	str[1] = base[y];
 }
 
-char *sprint_in_hex(char *p, short sz)
+char	*sprint_in_hex(char *p, short sz)
 {
 	short	i;
-	char *str;
-	char *res;
+	char	*str;
+	char	*res;
 
 	i = sz - 1;
-	str = malloc(sz*2+3);
+	str = malloc(sz * 2 + 3);
 	if (str == NULL)
 		return (0);
 	res = str;
@@ -98,12 +98,30 @@ size_t	count_flags(const char *fmt)
 	return (res);
 }
 
+void	flg(const char **fmt, unsigned short *flags, int *width, int *prec)
+{
+	*flags = parse_flags(*fmt);
+	*fmt = *fmt + count_flags(*fmt);
+	*width = ft_atoi(*fmt);
+	while (ft_isdigit(**fmt))
+		(*fmt)++;
+	if (**fmt == '.')
+	{
+		*flags = *flags | FLAG_PRECISION_ARG;
+		(*fmt)++;
+		*prec = ft_atoi(*fmt);
+		while (ft_isdigit(**fmt))
+			(*fmt)++;
+	}
+}
+
 int	ft_printf(const char *fmt, ...)
 {
 	unsigned short	flags;
 	va_list			ap;
 	int				cnt;
 	int				prec;
+	int				width;
 
 	cnt = 0;
 	va_start(ap, fmt);
@@ -112,28 +130,14 @@ int	ft_printf(const char *fmt, ...)
 		if (*fmt == '%')
 		{
 			fmt++;
-			flags = parse_flags(fmt);
-			fmt = fmt + count_flags(fmt);
-			int width = ft_atoi(fmt);
-			while (ft_isdigit(*fmt))
-				fmt++;
-			if (*fmt == '.')
-			{
-				flags = flags | FLAG_PRECISION_ARG;
-				fmt++;
-				prec = ft_atoi(fmt);
-				while (ft_isdigit(*fmt))
-					fmt++;
-			}
-			//printf("prec: [%d]\n", prec);
+			flg(&fmt, &flags, &width, &prec);
 			cnt = cnt + allspecifiers(ap, fmt, flags, width, prec);
 			fmt++;
 		}
 		else
 		{
-			ft_putchar_fd(*fmt, STDOUT_FILENO);
+			ft_putchar_fd(*fmt++, STDOUT_FILENO);
 			cnt++;
-			fmt++;
 		}
 	}
 	va_end(ap);
