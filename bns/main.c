@@ -18,15 +18,14 @@ int	main(void)
 	int	res;
 
 	printf("[origin]\n");
-	res = printf("'%10.2x'\n", 42);
+	res = printf("' %.1d '", 0);
 	printf("res: [%d]\n", res);
 	printf("\n[my]\n");
-res = ft_printf("'%10.2x'\n", 42);
+	res = ft_printf("' %.1d '", 0);
 	printf("res: [%d]\n", res);
 	return (0);
 }
 
 /*
-	        TEST(98, print(" %.2x ", -1));
-        TEST(101, print(" %.2x ", 10));
+	print(" %.1d ", 0)
 */

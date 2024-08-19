@@ -100,7 +100,7 @@ char	*bz(char *str, int pre, int prec, char *tmp)
 	needed = prec - d;
 	if (needed < 0)
 		needed = 0;
-	res = malloc(ft_strlen(str) + needed + 1);
+	res = malloc(ft_strlen(tmp) + needed + 1);
 	str = tmp;
 	tmp = res;
 	while (pre > 0)

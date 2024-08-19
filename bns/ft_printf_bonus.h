@@ -14,6 +14,8 @@
 # define FT_PRINTF_BONUS_H
 
 # include <stdarg.h>
+# include <stdio.h>
+# include <string.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include "../libft/libft.h"

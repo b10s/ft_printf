@@ -67,15 +67,14 @@ int	withminlen(char *str, int flags, t_wp wp, char c)
 
 int	ft_print_str_in_width_nums(char *str, int width, int flags, int prec)
 {
-	int		len;
 	char	c;
 	char	*padded;
 	t_wp	wp;
+	int		ln;
 
 	padded = NULL;
 	wp.width = width;
 	wp.prec = prec;
-	len = ft_strlen(str);
 	if ((flags & FLAG_LEADING_ZERO) != 0
 		&& (flags & FLAG_SIGN) == 0 && (flags & FLAG_PRECISION_ARG) == 0)
 		c = '0';
@@ -85,8 +84,9 @@ int	ft_print_str_in_width_nums(char *str, int width, int flags, int prec)
 	{
 		padded = ft_pad_with_zeroes(str, prec);
 		ft_putstr_fd(padded, STDOUT_FILENO);
+		ln = ft_strlen(padded);
 		free(padded);
-		return (ft_strlen(padded));
+		return (ln);
 	}
 	else
 		return (withminlen(str, flags, wp, c));
